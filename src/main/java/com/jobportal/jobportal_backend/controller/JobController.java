@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import com.jobportal.jobportal_backend.dto.JobPageResponse;
 import com.jobportal.jobportal_backend.model.Job;
 import com.jobportal.jobportal_backend.repository.JobRepository;
 
@@ -78,8 +84,34 @@ public class JobController {
 	            @RequestParam(required = false) String location,
 	            @RequestParam(required = false) String type
 	    ) {
-	        return jobRepository.searchJobs(title, location, type);
+	        return jobRepository.filterJobs(title, location, type);
 	    }
+	    
+	    
+	    @GetMapping("/jobs")
+	    public JobPageResponse getAllJobs(
+	            @RequestParam(defaultValue = "0") int page,
+	            @RequestParam(defaultValue = "5") int size,
+	            @RequestParam(defaultValue = "id") String sortBy,
+	            @RequestParam(defaultValue = "asc") String order
+	    ) {
+	        Sort sort = order.equalsIgnoreCase("desc")
+	            ? Sort.by(sortBy).descending()
+	            : Sort.by(sortBy).ascending();
+
+	        Pageable pageable = PageRequest.of(page, size, sort);
+	        Page<Job> jobPage = jobRepository.findAll(pageable);
+
+	        return new JobPageResponse(
+	            jobPage.getContent(),           // List<Job>
+	            jobPage.getNumber(),            // Current page number
+	            jobPage.getSize(),              // Page size
+	            jobPage.getTotalPages(),        // Total pages
+	            jobPage.getTotalElements()      // Total number of jobs
+	        );
+	    }
+
+	  
 
 
 }
