@@ -5,6 +5,9 @@ import com.jobportal.jobportal_backend.dto.AuthResponse;
 import com.jobportal.jobportal_backend.model.User;
 import com.jobportal.jobportal_backend.repository.UserRepository;
 import com.jobportal.jobportal_backend.util.JwtUtil;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
