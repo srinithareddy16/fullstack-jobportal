@@ -1,6 +1,10 @@
 package com.jobportal.jobportal_backend.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,5 +45,21 @@ public class ApplicationController {
         applicationRepository.save(application);
 
         return "Application submitted successfully!";
+    }
+    
+    @GetMapping("/user/{userId}")
+    public List<Application> getApplicationsByUser(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                                  .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return applicationRepository.findByUser(user);
+    }
+    
+    @GetMapping("/job/{jobId}")
+    public List<Application> getApplicationsByJob(@PathVariable Long jobId) {
+        Job job = jobRepository.findById(jobId)
+                               .orElseThrow(() -> new RuntimeException("Job not found"));
+
+        return applicationRepository.findByJob(job);
     }
 }
