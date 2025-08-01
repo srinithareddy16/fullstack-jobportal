@@ -12,16 +12,26 @@ public class JwtUtil {
 
 	@Value("${app.jwt.secret}")
 	private String secret;
+	
+	public String generateToken(String email, String role) {
+	    return Jwts.builder()
+	            .setSubject(email)
+	            .claim("role", role)  // ✅ Adding role here
+	            .setIssuedAt(new Date())
+	            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
+	            .signWith(SignatureAlgorithm.HS256, secret)
+	            .compact();
+	}
+	
+	public String extractRole(String token) {
+	    return Jwts.parser()
+	            .setSigningKey(secret)
+	            .parseClaimsJws(token)
+	            .getBody()
+	            .get("role", String.class);  // ✅ extracting the role from token
+	}
 
 
-    public String generateToken(String email) {
-        return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
-    }
 
     public String extractUsername(String token) {
         return Jwts.parser()

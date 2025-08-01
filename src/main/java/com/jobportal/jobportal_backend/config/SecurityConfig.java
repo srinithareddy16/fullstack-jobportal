@@ -26,6 +26,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             		.requestMatchers("/api/auth/**", "/hello").permitAll()
                     .requestMatchers("/api/jobs/**").authenticated() //  secure job APIs
+                    .requestMatchers("/api/admin/**").hasAuthority("admin")
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

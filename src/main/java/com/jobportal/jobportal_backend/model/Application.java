@@ -16,6 +16,7 @@ public class Application {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
     private LocalDateTime appliedAt;
@@ -25,12 +26,26 @@ public class Application {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-    public Job getJob() { return job; }
-    public void setJob(Job job) { this.job = job; }
-    public LocalDateTime getAppliedAt() { return appliedAt; }
-    public void setAppliedAt(LocalDateTime appliedAt) { this.appliedAt = appliedAt; }
+    public Long getId() {
+    	return id;
+    	}
+    public User getUser() {
+    	return user; 
+    	}
+    public void setUser(User user) {
+    	this.user = user;
+    	}
+    public Job getJob() { 
+    	return job;
+    	}
+    public void setJob(Job job) {
+    	this.job = job; 
+    	}
+    public LocalDateTime getAppliedAt() {
+    	return appliedAt; 
+    	}
+    public void setAppliedAt(LocalDateTime appliedAt) {
+    	this.appliedAt = appliedAt; 
+    	}
 }
 

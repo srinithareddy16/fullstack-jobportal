@@ -1,6 +1,8 @@
 package com.jobportal.jobportal_backend.model;
 
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +21,10 @@ public class Job {
 	    private String location;
 	    private String type; // e.g., full-time, part-time
 	    private String salary;
+	    
+	    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<Application> applications;
+	    
 		public Long getId() {
 			return id;
 		}

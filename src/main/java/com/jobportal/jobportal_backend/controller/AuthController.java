@@ -6,8 +6,6 @@ import com.jobportal.jobportal_backend.model.User;
 import com.jobportal.jobportal_backend.repository.UserRepository;
 import com.jobportal.jobportal_backend.util.JwtUtil;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +42,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
 
         return ResponseEntity.ok(new AuthResponse(token));
     }

@@ -46,13 +46,15 @@ public class JwtAuthFilter extends OncePerRequestFilter{
         final String username = jwtUtil.extractUsername(token);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            
-           User user = userRepository.findByEmail(username);
+        	User user = userRepository.findByEmail(username);
+        	String role = jwtUtil.extractRole(token); // ✅ get role from token
+
         	UserDetails userDetails = org.springframework.security.core.userdetails.User
-        	    .withUsername(user.getEmail())
-        	    .password(user.getPassword())
-        	    .authorities("USER") // or fetch actual roles if you have them
-        	    .build();
+        	        .withUsername(user.getEmail())
+        	        .password(user.getPassword())
+        	        .authorities(role) // ✅ dynamic role from JWT
+        	        .build();
+
             if (jwtUtil.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
