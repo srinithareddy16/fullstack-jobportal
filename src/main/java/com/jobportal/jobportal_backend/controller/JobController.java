@@ -111,7 +111,26 @@ public class JobController {
 	        );
 	    }
 
-	  
+	    @GetMapping("/jobs/search")
+	    public Page<Job> searchJobs(
+	            @RequestParam(defaultValue = "") String keyword,
+	            @RequestParam(defaultValue = "") String location,
+	            @RequestParam(defaultValue = "") String type,
+	            @RequestParam(defaultValue = "0") int page,
+	            @RequestParam(defaultValue = "5") int size,
+	            @RequestParam(defaultValue = "id") String sortBy,
+	            @RequestParam(defaultValue = "asc") String order
+	    ) {
+	        // Determine sort direction
+	        Sort sort = order.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
+	                                                   : Sort.by(sortBy).ascending();
+
+	        Pageable pageable = PageRequest.of(page, size, sort);
+
+	        // Call the custom search method in the repository
+	        return jobRepository.searchJobs(keyword, location, type, pageable);
+	    }
+
 
 
 }
