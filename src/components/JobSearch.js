@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { searchJobs } from "../services/api";
+import JobCard from "./JobCard";
+
 import "./JobSearch.css"; // Create this CSS file
 
 const JobSearch = () => {
@@ -61,20 +63,15 @@ const JobSearch = () => {
       {loading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
 
-      <ul className="job-list">
-        {jobs.map((job) => (
-          <li key={job.id} className="job-card">
-            <h3>{job.title}</h3>
-            <p>{job.description}</p>
-            <p>
-              <strong>{job.company}</strong> | {job.location} | {job.type}
-            </p>
-            <p>Salary: {job.salary}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="job-list">
+  {jobs.map((job) => (
+    <JobCard key={job.id} job={job} token={token} />
+  ))}
+</div>
+
     </div>
   );
 };
 
-export default JobSearch;
+export default JobSearch; 
+

@@ -14,3 +14,27 @@ export const searchJobs = async (params, token) => {
     },
   });
 };
+
+export const applyJob = async (jobId, token) => {
+  return api.post(`/jobs/${jobId}/apply`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const saveJob = async (jobId, token) => {
+  return api.post(`/jobs/${jobId}/save`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const unsaveJob = async (jobId, token) => {
+  return api.delete(`/jobs/${jobId}/unsave`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
